@@ -29,6 +29,9 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - `f0bdfe5` — opt-in `report.md` for sweeps
   - `054261d` — `--report-only` + metadata embedded in report
   - `3dbb797` — first fast loop results recorded
+  - `a553b83` — agent02 added `dgp006_thresholded_sum`
+  - `8b5acc0` — agent02 added `dgp007_multi_sine_interaction`
+  - `14d2850` — agent02 ran dgp007 sweeps + docs
 
 ### Next (ordered)
 1) Add `dgp008_...` (one incremental complexity step), update `dgp_xgb/dgps.py`, and run the fast loop to compare vs existing DGPs.
@@ -48,6 +51,12 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - `.venv/bin/python -m dgp_xgb --dgp dgp002_interaction --backend xgboost --n-train 500 --n-test 200 --run-id smoke_xgb_agent01 --xgb-max-depth 2 --xgb-rounds 25`
   - `python3 -m dgp_xgb.sweep --sweep-id smoke_report_agent01 --dgps dgp001_linear --n-train-list 50,100 --n-test 40 --seeds 0,1 --backend baseline_mean --report`
   - `python3 -m dgp_xgb.sweep --sweep-id smoke_report_agent01 --report-only`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop02_fast_baseline_agent02 --dgps all --n-train-list 2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend baseline_mean --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop02_fast_xgb_agent02d --dgps all --n-train-list 2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop03_dgp007_xgb_agent02 --dgps dgp007_multi_sine_interaction --n-train-list 2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop04_dgp007_curve_xgb_agent02 --dgps dgp007_multi_sine_interaction --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop05_dgp007_curve_baseline_agent02 --dgps dgp007_multi_sine_interaction --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend baseline_mean --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop06_dgp007_curve_xgb_agent02 --dgps dgp007_multi_sine_interaction --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1,2 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
 - Outcome:
   - Succeeded; created local artifacts under `runs/smoke_agent01/`, `runs/smoke_xgb_agent01/`, and `sweeps/smoke_sweep_agent01/` (gitignored).
 
@@ -62,6 +71,22 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - `dgp005_sine_quadratic`: 0.8881
   - Full reports: `sweeps/loop01_fast_baseline_agent01/report.md`, `sweeps/loop01_fast_xgb_agent01/report.md`
 
+## Second loop (fast, agent02)
+- Baseline: `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop02_fast_baseline_agent02 --dgps all --n-train-list 2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend baseline_mean --report`
+- XGBoost: `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop02_fast_xgb_agent02d --dgps all --n-train-list 2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+- Result summary (test R² at n_train=2000, seed=0):
+  - `dgp006_thresholded_sum`: 0.1038
+  - `dgp007_multi_sine_interaction`: 0.8829
+  - Full reports: `sweeps/loop02_fast_baseline_agent02/report.md`, `sweeps/loop02_fast_xgb_agent02d/report.md`
+
+## Learning curve (dgp007, agent02)
+- XGBoost curve: `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop04_dgp007_curve_xgb_agent02 --dgps dgp007_multi_sine_interaction --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+- Baseline curve: `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop05_dgp007_curve_baseline_agent02 --dgps dgp007_multi_sine_interaction --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend baseline_mean --report`
+- Multi-seed XGBoost curve: `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop06_dgp007_curve_xgb_agent02 --dgps dgp007_multi_sine_interaction --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1,2 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+- Result summary (test R² mean across seeds):
+  - `dgp007_multi_sine_interaction`: ~0.88 across 200–2000; curve is flat vs n_train
+  - Full reports: `sweeps/loop04_dgp007_curve_xgb_agent02/report.md`, `sweeps/loop05_dgp007_curve_baseline_agent02/report.md`, `sweeps/loop06_dgp007_curve_xgb_agent02/report.md`
+
 ## Known issues / current breakage
 - A larger sweep attempt was interrupted; `sweeps/loop01_xgb_agent01/` may be partially populated (gitignored).
 
@@ -71,4 +96,4 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
 - Branch state:
   - Local branch `dev` is ahead of `origin/dev` by multiple commits; do not push unless the human requests it.
 - If anything is intentionally uncommitted, list it here with a reason:
-  - None.
+  - Local `sweeps/` artifacts from agent02 runs (gitignored).

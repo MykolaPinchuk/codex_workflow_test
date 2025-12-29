@@ -2,6 +2,11 @@
 
 These are the operating rules for Codex agents working in this repo.
 
+## General context
+- This repo is being developed by coding agents under human supervision.
+- Development is iterative: agents onboard, explore, propose next steps, implement, test, and hand off.
+- Agents are numbered sequentially (agent01, agent02, etc). Each agent should mentions its number in logs, handoff doc, and commit messages.
+
 ## Triggers
 - User message **exactly**: `Onboard`
   - Perform the onboarding procedure described below (equivalent to running the `$onboard` skill).
@@ -91,3 +96,7 @@ If not run, state so in `HANDOFF.md` with a reason.
 
 ## Decisions
 If a non-trivial decision is made (trade-offs, protocol changes, new conventions), create/update an ADR under `docs/adr/` and link it from `HANDOFF.md`.
+
+## Miscellaneous
+- Use Pacific time for timestamps.
+- Do not go outside the repo unless explicitly instructed.

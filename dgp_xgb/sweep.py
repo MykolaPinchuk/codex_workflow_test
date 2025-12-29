@@ -2,8 +2,11 @@ from __future__ import annotations
 
 import argparse
 import csv
+from dataclasses import dataclass
+from datetime import datetime, timezone
 import json
 from pathlib import Path
+import statistics
 from typing import Any
 
 from .dgps import list_dgps
@@ -50,6 +53,11 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--out-root", type=Path, default=Path("sweeps"))
     parser.add_argument("--sweep-id", type=str, required=True, help="Directory name under out-root.")
     parser.add_argument("--dry-run", action="store_true", help="Print planned runs and exit.")
+    parser.add_argument(
+        "--report",
+        action="store_true",
+        help="Write `report.md` (aggregated across seeds) next to `summary.csv`.",
+    )
 
     parser.add_argument("--xgb-max-depth", type=int, default=2)
     parser.add_argument("--xgb-eta", type=float, default=0.1)
@@ -155,6 +163,8 @@ def main(argv: list[str] | None = None) -> int:
     _write_metadata(
         sweep_dir / "sweep.json",
         {
+            "sweep_id": args.sweep_id,
+            "created_at_utc": datetime.now(timezone.utc).isoformat(),
             "dgps": dgps,
             "n_train_list": n_train_list,
             "n_test": args.n_test,
@@ -171,12 +181,111 @@ def main(argv: list[str] | None = None) -> int:
         },
     )
 
+    if args.report:
+        _write_report(sweep_dir=sweep_dir, summary_path=summary_path)
+
     print(str(sweep_dir))
     return 0
 
 
 def _write_metadata(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+@dataclass(frozen=True)
+class _AggRow:
+    dgp: str
+    n_train: int
+    n: int
+    test_r2_mean: float
+    test_r2_std: float
+    test_rmse_mean: float
+    test_rmse_std: float
+
+
+def _write_report(*, sweep_dir: Path, summary_path: Path) -> None:
+    rows = _read_summary(summary_path)
+    aggregated = _aggregate_rows(rows)
+
+    report_path = sweep_dir / "report.md"
+    lines: list[str] = [
+        f"# Sweep `{sweep_dir.name}`",
+        "",
+        "- Aggregation: mean/std across seeds per `(dgp, n_train)`.",
+        "- Source: `summary.csv`.",
+        "",
+    ]
+
+    for dgp in sorted({row.dgp for row in aggregated}):
+        lines.extend(
+            [
+                f"## `{dgp}`",
+                "",
+                "| n_train | n | test_r2_mean | test_r2_std | test_rmse_mean | test_rmse_std |",
+                "|---:|---:|---:|---:|---:|---:|",
+            ]
+        )
+        for row in sorted((r for r in aggregated if r.dgp == dgp), key=lambda r: r.n_train):
+            lines.append(
+                "| "
+                + " | ".join(
+                    [
+                        str(row.n_train),
+                        str(row.n),
+                        _fmt(row.test_r2_mean),
+                        _fmt(row.test_r2_std),
+                        _fmt(row.test_rmse_mean),
+                        _fmt(row.test_rmse_std),
+                    ]
+                )
+                + " |"
+            )
+        lines.append("")
+
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _fmt(value: float) -> str:
+    if value != value:
+        return "nan"
+    return f"{value:.6g}"
+
+
+def _read_summary(summary_path: Path) -> list[dict[str, str]]:
+    with summary_path.open("r", newline="", encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+        return [dict(row) for row in reader]
+
+
+def _aggregate_rows(rows: list[dict[str, str]]) -> list[_AggRow]:
+    groups: dict[tuple[str, int], list[dict[str, str]]] = {}
+    for row in rows:
+        dgp = row["dgp"]
+        n_train = int(row["n_train"])
+        groups.setdefault((dgp, n_train), []).append(row)
+
+    aggregated: list[_AggRow] = []
+    for (dgp, n_train), group in groups.items():
+        test_r2_values = [float(item["test_r2"]) for item in group]
+        test_rmse_values = [float(item["test_rmse"]) for item in group]
+        aggregated.append(
+            _AggRow(
+                dgp=dgp,
+                n_train=n_train,
+                n=len(group),
+                test_r2_mean=statistics.fmean(test_r2_values),
+                test_r2_std=_std(test_r2_values),
+                test_rmse_mean=statistics.fmean(test_rmse_values),
+                test_rmse_std=_std(test_rmse_values),
+            )
+        )
+    return aggregated
+
+
+def _std(values: list[float]) -> float:
+    if len(values) < 2:
+        return 0.0
+    return statistics.stdev(values)
 
 
 if __name__ == "__main__":

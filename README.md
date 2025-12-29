@@ -27,3 +27,4 @@ Start here (in this order):
 - Run with XGBoost: `python3 -m dgp_xgb --dgp dgp002_interaction --backend xgboost`
 - Override XGBoost capacity: `python3 -m dgp_xgb --backend xgboost --xgb-max-depth 2 --xgb-rounds 25`
 - Run a small sweep: `python3 -m dgp_xgb.sweep --sweep-id demo --dgps dgp001_linear,dgp002_interaction --backend baseline_mean`
+- Add a markdown report: `python3 -m dgp_xgb.sweep --sweep-id demo --dgps dgp001_linear --backend baseline_mean --report`

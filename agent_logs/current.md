@@ -64,3 +64,10 @@ Action: Capped `xgboost` to `<3` in `requirements-xgb.txt` and documented ration
 Result: Default optional XGBoost install path avoids pulling very large dependency sets.
 Next: Optional: pin exact versions if strict reproducibility becomes important.
 Refs: `requirements-xgb.txt`, `docs/adr/0002-dgp-and-experiment-protocol.md`
+
+## 2025-12-28 19:19
+Intent: agent01 add an opt-in, minimal human-readable sweep report.
+Action: Added `--report` to `python3 -m dgp_xgb.sweep` to write `report.md` aggregated across seeds.
+Result: `sweeps/<id>/report.md` summarizes test metrics per DGP and `n_train` without changing existing outputs.
+Next: If desired, add a tiny “report-only” mode that can rebuild `report.md` from an existing `summary.csv`.
+Refs: `dgp_xgb/sweep.py`, `sweeps/smoke_report_agent01/report.md`

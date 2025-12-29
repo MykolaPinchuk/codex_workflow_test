@@ -101,3 +101,4 @@ If a non-trivial decision is made (trade-offs, protocol changes, new conventions
 - Use Pacific time for timestamps.
 - Keep generated artifacts out of git (e.g., `runs/`, `sweeps/`); update `.gitignore` if new artifact roots are introduced.
 - Do not go outside the repo unless explicitly instructed.
+- If unsure, err on the side of not overengineering.

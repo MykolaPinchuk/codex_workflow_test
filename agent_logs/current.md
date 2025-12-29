@@ -78,3 +78,17 @@ Action: Added `--report-only` to regenerate `report.md` from an existing sweep a
 Result: Agents can rebuild reports without rerunning models; `report.md` is self-describing.
 Next: Optional: add a `--report-path` override if needed (not added).
 Refs: `dgp_xgb/sweep.py`, `sweeps/smoke_report_agent01/report.md`, `sweeps/smoke_report_agent01/sweep.json`
+
+## 2025-12-28 19:25
+Intent: agent01 keep handoff state accurate.
+Action: Updated `HANDOFF.md` to reflect bootstrap + sweep reporting capabilities and completed smoke checks.
+Result: `HANDOFF.md` matches current repo behavior and entrypoints.
+Next: Start adding new DGPs and recording results via sweeps + reports (artifacts stay gitignored).
+Refs: `HANDOFF.md`
+
+## 2025-12-28 19:31
+Intent: agent01 run the first “fast loop” within ~60s.
+Action: Ran baseline_mean and xgboost sweeps across all current DGPs with a small grid (n_train=2000, seed=0) and wrote reports.
+Result: XGBoost R² (test) shows large gains on linear and sine/quadratic, moderate on interaction, low on piecewise, and some on xor-like.
+Next: Add `dgp006_...` (next complexity step) and rerun the same fast loop for comparability.
+Refs: `sweeps/loop01_fast_baseline_agent01/report.md`, `sweeps/loop01_fast_xgb_agent01/report.md`

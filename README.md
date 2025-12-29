@@ -29,3 +29,7 @@ Start here (in this order):
 - Run a small sweep: `python3 -m dgp_xgb.sweep --sweep-id demo --dgps dgp001_linear,dgp002_interaction --backend baseline_mean`
 - Add a markdown report: `python3 -m dgp_xgb.sweep --sweep-id demo --dgps dgp001_linear --backend baseline_mean --report`
 - Rebuild report without rerunning: `python3 -m dgp_xgb.sweep --sweep-id demo --report-only`
+
+## First loop (fast, <60s)
+- Baseline: `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop01_fast_baseline --dgps all --n-train-list 2000 --n-test 1000 --seeds 0 --backend baseline_mean --report`
+- XGBoost: `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop01_fast_xgb --dgps all --n-train-list 2000 --n-test 1000 --seeds 0 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`

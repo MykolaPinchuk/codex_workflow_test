@@ -43,3 +43,24 @@ Action: Ran ./scripts/bootstrap.sh --xgb; executed XGBoost sweep with venv pytho
 Result: XGBoost sweep report generated at sweeps/loop02_fast_xgb_agent02d/report.md.
 Next: Review results and decide on dgp008 direction.
 Refs: sweeps/loop02_fast_baseline_agent02/report.md, sweeps/loop02_fast_xgb_agent02d/report.md
+
+## 2025-12-28 19:52
+Intent: Run sweep for new DGP after checkpoint.
+Action: Executed XGBoost sweep for dgp007_multi_sine_interaction.
+Result: Report generated at sweeps/loop03_dgp007_xgb_agent02/report.md.
+Next: Review results or expand to multi-n_train sweep for learning curve.
+Refs: sweeps/loop03_dgp007_xgb_agent02/report.md
+
+## 2025-12-28 19:54
+Intent: Run multi-n_train learning-curve sweep for dgp007.
+Action: Executed XGBoost sweep with n_train list 200,500,1000,2000.
+Result: Report generated at sweeps/loop04_dgp007_curve_xgb_agent02/report.md.
+Next: Review curve and decide if dgp008 should be harder or add baseline sweep.
+Refs: sweeps/loop04_dgp007_curve_xgb_agent02/report.md
+
+## 2025-12-28 19:58
+Intent: Run baseline_mean learning-curve sweep for dgp007.
+Action: Executed baseline_mean sweep with n_train list 200,500,1000,2000.
+Result: Report generated at sweeps/loop05_dgp007_curve_baseline_agent02/report.md.
+Next: Compare baseline and XGBoost curves.
+Refs: sweeps/loop05_dgp007_curve_baseline_agent02/report.md

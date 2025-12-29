@@ -19,6 +19,26 @@ Start here (in this order):
 - Keep raw data, secrets, and large generated artifacts out of git (update `.gitignore` as needed).
 - Prefer writing results as markdown reports and small tables that are easy to review.
 
+## For human
+
+### Onboarding 
+
+* Start a new Codex chat
+* Attach **`AGENTS.md`**
+* Send message: `Onboard`
+
+The agent will follow the onboarding protocol in `AGENTS.md` (the skill exists too, but you don’t need to type `$onboard`).
+
+### Wrap-up / handoff (with git commit)
+
+When you want a handoff + checkpoint commit:
+
+* Send message: `wrap up` (or include `handoff`)
+
+For more details, see ChatGPT chat at https://chatgpt.com/g/g-p-69488332b01c819199786aea5f101db1-codex-setup/c/694d6147-4160-8326-bdb6-ed3beda1dd7b
+
+
+
 ## Quickstart (local)
 - Create venv (recommended): `./scripts/bootstrap.sh`
 - List DGPs: `python3 -m dgp_xgb --list-dgps`

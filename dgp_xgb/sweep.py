@@ -58,6 +58,11 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Write `report.md` (aggregated across seeds) next to `summary.csv`.",
     )
+    parser.add_argument(
+        "--report-only",
+        action="store_true",
+        help="Only (re)write `report.md` from an existing `summary.csv` (no runs executed).",
+    )
 
     parser.add_argument("--xgb-max-depth", type=int, default=2)
     parser.add_argument("--xgb-eta", type=float, default=0.1)
@@ -71,6 +76,9 @@ def _build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
+
+    if args.report_only and args.dry_run:
+        parser.error("--report-only cannot be used with --dry-run")
 
     available_dgps = [dgp.name for dgp in list_dgps()]
     if args.dgps == "all":
@@ -91,6 +99,17 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     sweep_dir = args.out_root / args.sweep_id
+    summary_path = sweep_dir / "summary.csv"
+
+    if args.report_only:
+        if not sweep_dir.exists():
+            parser.error(f"Sweep directory does not exist: {sweep_dir}")
+        if not summary_path.exists():
+            parser.error(f"Missing summary.csv: {summary_path}")
+        _write_report(sweep_dir=sweep_dir, summary_path=summary_path)
+        print(str(sweep_dir))
+        return 0
+
     sweep_dir.mkdir(parents=True, exist_ok=False)
 
     xgb_config = XGBConfig(
@@ -101,7 +120,6 @@ def main(argv: list[str] | None = None) -> int:
         num_boost_round=args.xgb_rounds,
     )
 
-    summary_path = sweep_dir / "summary.csv"
     with summary_path.open("w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(
             file,
@@ -207,6 +225,8 @@ def _write_report(*, sweep_dir: Path, summary_path: Path) -> None:
     rows = _read_summary(summary_path)
     aggregated = _aggregate_rows(rows)
 
+    metadata = _read_optional_sweep_metadata(sweep_dir / "sweep.json")
+
     report_path = sweep_dir / "report.md"
     lines: list[str] = [
         f"# Sweep `{sweep_dir.name}`",
@@ -215,6 +235,9 @@ def _write_report(*, sweep_dir: Path, summary_path: Path) -> None:
         "- Source: `summary.csv`.",
         "",
     ]
+
+    if metadata:
+        lines.extend(["## Metadata", "", "```json", json.dumps(metadata, indent=2, sort_keys=True), "```", ""])
 
     for dgp in sorted({row.dgp for row in aggregated}):
         lines.extend(
@@ -286,6 +309,15 @@ def _std(values: list[float]) -> float:
     if len(values) < 2:
         return 0.0
     return statistics.stdev(values)
+
+
+def _read_optional_sweep_metadata(path: Path) -> dict[str, Any] | None:
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
 
 
 if __name__ == "__main__":

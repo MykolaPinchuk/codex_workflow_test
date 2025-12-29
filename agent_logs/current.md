@@ -71,3 +71,10 @@ Action: Added `--report` to `python3 -m dgp_xgb.sweep` to write `report.md` aggr
 Result: `sweeps/<id>/report.md` summarizes test metrics per DGP and `n_train` without changing existing outputs.
 Next: If desired, add a tiny “report-only” mode that can rebuild `report.md` from an existing `summary.csv`.
 Refs: `dgp_xgb/sweep.py`, `sweeps/smoke_report_agent01/report.md`
+
+## 2025-12-28 19:22
+Intent: agent01 reduce rerun friction for sweep reports.
+Action: Added `--report-only` to regenerate `report.md` from an existing sweep and embedded `sweep.json` metadata into the report.
+Result: Agents can rebuild reports without rerunning models; `report.md` is self-describing.
+Next: Optional: add a `--report-path` override if needed (not added).
+Refs: `dgp_xgb/sweep.py`, `sweeps/smoke_report_agent01/report.md`, `sweeps/smoke_report_agent01/sweep.json`

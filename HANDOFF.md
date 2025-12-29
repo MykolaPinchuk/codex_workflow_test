@@ -1,8 +1,8 @@
 # HANDOFF
 
 ## Current slice
-Build the DGP + experiment runner scaffold so future agents can add new DGPs and run a low-capacity XGBoost baseline consistently.
-Keep outputs reproducible and avoid committing large run artifacts.
+Start iterating on increasingly complex regression DGPs (next: `dgp006_...`) and measure learnability with a low-capacity XGBoost baseline.
+Keep runs reproducible (configs/reports) while keeping bulky artifacts out of git.
 
 ## Invariants (do not break)
 - Follow `AGENTS.md` triggers and procedures.
@@ -22,11 +22,16 @@ Keep outputs reproducible and avoid committing large run artifacts.
 - Ignored run artifacts: `.gitignore` (includes `runs/` and `sweeps/`).
 - Documented protocol decision: `docs/adr/0002-dgp-and-experiment-protocol.md`.
 - Added DGP contribution checklist: `docs/dgp/ADDING_DGP.md`.
+- Key checkpoints:
+  - `8fad083` — env bootstrap + optional XGBoost
+  - `f0bdfe5` — opt-in `report.md` for sweeps
+  - `054261d` — `--report-only` + metadata embedded in report
+  - `3dbb797` — first fast loop results recorded
 
 ### Next (ordered)
-1) Start adding new DGPs (`dgp006_...`, `dgp007_...`) and keep them deterministic + regression-only.
-2) Run occasional small sweeps with `--report` and capture the key takeaway in `HANDOFF.md` / `agent_logs/current.md` (artifacts stay gitignored). A good default is the “fast loop” below.
-3) If results comparison becomes painful, agree on a “default” sweep command (not mandatory) and document it in `HANDOFF.md`.
+1) Add `dgp006_...` (one incremental complexity step), update `dgp_xgb/dgps.py`, and run the fast loop to compare vs existing DGPs.
+2) Periodically run a small learning-curve sweep (more than one `n_train`) and use `--report` for a readable summary.
+3) If runtime creeps up, trim grids first (seeds, n_train_list, n_test, rounds) before changing code.
 
 ### Open questions
 - Should complexity be represented as separate numbered DGPs only, or via a parameterized DGP family (e.g., `dgp010_family --complexity k`)?
@@ -56,10 +61,12 @@ Keep outputs reproducible and avoid committing large run artifacts.
   - Full reports: `sweeps/loop01_fast_baseline_agent01/report.md`, `sweeps/loop01_fast_xgb_agent01/report.md`
 
 ## Known issues / current breakage
-- None known.
+- A larger sweep attempt was interrupted; `sweeps/loop01_xgb_agent01/` may be partially populated (gitignored).
 
 ## Git notes (handoff)
 - `.gitignore` updates made:
   - Ignore local artifacts under `runs/` and `sweeps/`.
+- Branch state:
+  - Local branch `dev` is ahead of `origin/dev` by multiple commits; do not push unless the human requests it.
 - If anything is intentionally uncommitted, list it here with a reason:
   - None.

@@ -1,0 +1,5 @@
+# Optional dependency for `--backend xgboost`.
+# Install: `python3 -m pip install -r requirements-xgb.txt`
+#
+# Note: xgboost 3.x wheels can pull very large GPU-related dependencies; we cap to <3 for lighter installs.
+xgboost>=2.0.0,<3.0.0

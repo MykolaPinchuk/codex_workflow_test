@@ -56,7 +56,7 @@ Staging approach:
 - If the diff includes suspicious paths, stop and report.
 
 Commit message:
-- `handoff: <short description>`
+- `handoff: <short description> [<agent number>]`
 
 After committing:
 - Show `git status` again.

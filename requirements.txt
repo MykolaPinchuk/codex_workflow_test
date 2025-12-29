@@ -1,0 +1,4 @@
+# Base (minimal) dependencies.
+# The baseline backend (`baseline_mean`) requires no third-party packages, so this can stay empty.
+#
+# Install: `python3 -m pip install -r requirements.txt`

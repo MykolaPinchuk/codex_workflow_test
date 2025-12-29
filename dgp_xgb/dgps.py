@@ -108,6 +108,25 @@ def _dgp006_thresholded_sum(n: int, seed: int, noise_std: float) -> tuple[list[l
     return features, targets
 
 
+def _dgp007_multi_sine_interaction(n: int, seed: int, noise_std: float) -> tuple[list[list[float]], list[float]]:
+    rng = random.Random(seed)
+    n_features = 7
+    features: list[list[float]] = []
+    targets: list[float] = []
+    for _ in range(n):
+        row = _uniform_features(rng, n_features)
+        y_value = (
+            math.sin(2.0 * row[0])
+            + 0.5 * math.sin(4.0 * row[1])
+            + 0.4 * row[2] * row[3]
+            + 0.2 * abs(row[4])
+            + _gaussian_noise(rng, noise_std)
+        )
+        features.append(row)
+        targets.append(y_value)
+    return features, targets
+
+
 _DGPS: list[DGP] = [
     DGP(
         name="dgp001_linear",
@@ -144,6 +163,12 @@ _DGPS: list[DGP] = [
         description="Thresholded sum gates a linear term; piecewise interaction.",
         n_features=6,
         generate=_dgp006_thresholded_sum,
+    ),
+    DGP(
+        name="dgp007_multi_sine_interaction",
+        description="Multi-frequency sines + interaction + absolute value term.",
+        n_features=7,
+        generate=_dgp007_multi_sine_interaction,
     ),
 ]
 

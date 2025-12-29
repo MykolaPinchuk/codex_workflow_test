@@ -1,7 +1,7 @@
 # HANDOFF
 
 ## Current slice
-Start iterating on increasingly complex regression DGPs (next: `dgp006_...`) and measure learnability with a low-capacity XGBoost baseline.
+Start iterating on increasingly complex regression DGPs (next: `dgp007_...`) and measure learnability with a low-capacity XGBoost baseline.
 Keep runs reproducible (configs/reports) while keeping bulky artifacts out of git.
 
 ## Invariants (do not break)
@@ -22,6 +22,7 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
 - Ignored run artifacts: `.gitignore` (includes `runs/` and `sweeps/`).
 - Documented protocol decision: `docs/adr/0002-dgp-and-experiment-protocol.md`.
 - Added DGP contribution checklist: `docs/dgp/ADDING_DGP.md`.
+- Added `dgp006_thresholded_sum` to extend complexity with a threshold-gated linear term.
 - Key checkpoints:
   - `8fad083` — env bootstrap + optional XGBoost
   - `f0bdfe5` — opt-in `report.md` for sweeps
@@ -29,7 +30,7 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - `3dbb797` — first fast loop results recorded
 
 ### Next (ordered)
-1) Add `dgp006_...` (one incremental complexity step), update `dgp_xgb/dgps.py`, and run the fast loop to compare vs existing DGPs.
+1) Add `dgp007_...` (one incremental complexity step), update `dgp_xgb/dgps.py`, and run the fast loop to compare vs existing DGPs.
 2) Periodically run a small learning-curve sweep (more than one `n_train`) and use `--report` for a readable summary.
 3) If runtime creeps up, trim grids first (seeds, n_train_list, n_test, rounds) before changing code.
 

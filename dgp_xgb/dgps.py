@@ -93,6 +93,21 @@ def _dgp005_sine_quadratic(n: int, seed: int, noise_std: float) -> tuple[list[li
     return features, targets
 
 
+def _dgp006_thresholded_sum(n: int, seed: int, noise_std: float) -> tuple[list[list[float]], list[float]]:
+    rng = random.Random(seed)
+    n_features = 6
+    features: list[list[float]] = []
+    targets: list[float] = []
+    for _ in range(n):
+        row = _uniform_features(rng, n_features)
+        threshold = row[0] + 0.5 * row[1]
+        gate = 1.0 if threshold > 0.0 else -1.0
+        y_value = gate * row[2] + 0.3 * row[3] + _gaussian_noise(rng, noise_std)
+        features.append(row)
+        targets.append(y_value)
+    return features, targets
+
+
 _DGPS: list[DGP] = [
     DGP(
         name="dgp001_linear",
@@ -123,6 +138,12 @@ _DGPS: list[DGP] = [
         description="Sinusoid + quadratic; smooth nonlinearity.",
         n_features=6,
         generate=_dgp005_sine_quadratic,
+    ),
+    DGP(
+        name="dgp006_thresholded_sum",
+        description="Thresholded sum gates a linear term; piecewise interaction.",
+        n_features=6,
+        generate=_dgp006_thresholded_sum,
     ),
 ]
 

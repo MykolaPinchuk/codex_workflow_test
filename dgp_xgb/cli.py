@@ -4,6 +4,7 @@ import argparse
 from pathlib import Path
 
 from .dgps import get_dgp, list_dgps
+from .params import parse_param_string
 from .runner import RunConfig, XGBConfig, run_experiment
 
 
@@ -16,6 +17,12 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--list-dgps", action="store_true", help="List available DGPs and exit.")
 
     parser.add_argument("--dgp", type=str, default="dgp001_linear", help="DGP name.")
+    parser.add_argument(
+        "--dgp-params",
+        type=str,
+        default="",
+        help="Comma-separated key=value pairs for parametric DGPs.",
+    )
     parser.add_argument("--n-train", type=int, default=5000, help="Training rows.")
     parser.add_argument("--n-test", type=int, default=2000, help="Test rows.")
     parser.add_argument("--seed", type=int, default=0, help="Base RNG seed.")
@@ -55,8 +62,14 @@ def main(argv: list[str] | None = None) -> int:
     except KeyError as exc:
         parser.error(str(exc))
 
+    try:
+        dgp_params = parse_param_string(args.dgp_params)
+    except ValueError as exc:
+        parser.error(str(exc))
+
     config = RunConfig(
         dgp=args.dgp,
+        dgp_params=dgp_params,
         n_train=args.n_train,
         n_test=args.n_test,
         seed=args.seed,

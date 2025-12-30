@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .backends import BackendResult, predict_baseline_mean, predict_xgboost
-from .dgps import get_dgp
+from .dgps import get_dgp, resolve_dgp_params
 from .metrics import regression_metrics
 
 
@@ -23,6 +23,7 @@ class XGBConfig:
 @dataclass(frozen=True)
 class RunConfig:
     dgp: str
+    dgp_params: dict[str, float]
     n_train: int
     n_test: int
     seed: int
@@ -53,8 +54,9 @@ def run_experiment(config: RunConfig, out_root: Path, *, run_id: str | None = No
     run_dir.mkdir(parents=True, exist_ok=False)
 
     dgp = get_dgp(config.dgp)
-    x_train, y_train = dgp.generate(config.n_train, config.seed, config.noise_std)
-    x_test, y_test = dgp.generate(config.n_test, config.seed + 1, config.noise_std)
+    dgp_params = resolve_dgp_params(dgp, config.dgp_params)
+    x_train, y_train = dgp.generate(config.n_train, config.seed, config.noise_std, dgp_params)
+    x_test, y_test = dgp.generate(config.n_test, config.seed + 1, config.noise_std, dgp_params)
 
     backend_result: BackendResult
     if config.backend == "baseline_mean":
@@ -105,6 +107,7 @@ def run_experiment(config: RunConfig, out_root: Path, *, run_id: str | None = No
                 f"# Run {run_id_value}",
                 "",
                 f"- DGP: `{dgp.name}` — {dgp.description}",
+                f"- DGP params: {json.dumps(dgp_params, sort_keys=True)}",
                 f"- Backend: `{backend_result.backend}`",
                 f"- Train: n={config.n_train}, noise_std={config.noise_std}",
                 f"- Test: n={config.n_test}, noise_std={config.noise_std}",

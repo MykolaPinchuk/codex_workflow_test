@@ -11,6 +11,7 @@ Keep this file short. Update it only when something important changes.
 - `agent_logs/current.md` — live execution log for this cycle.
 - `docs/adr/0001-agentic-workflow-protocol.md` — foundational workflow decision.
 - `docs/adr/0002-dgp-and-experiment-protocol.md` — DGP naming, runner, and artifact conventions.
+- `docs/adr/0003-parameterized-dgp-family.md` — parameterized DGP support and CLI flags.
 - `dgp_xgb/cli.py` — CLI entrypoint (`python -m dgp_xgb ...`).
 - `dgp_xgb/dgps.py` — DGP registry and generators.
 - `dgp_xgb/runner.py` — experiment runner + artifact writing.

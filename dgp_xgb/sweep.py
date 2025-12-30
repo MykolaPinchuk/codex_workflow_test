@@ -10,6 +10,7 @@ import statistics
 from typing import Any
 
 from .dgps import list_dgps
+from .params import parse_param_string
 from .runner import RunConfig, XGBConfig, run_experiment
 
 
@@ -33,6 +34,12 @@ def _build_parser() -> argparse.ArgumentParser:
         type=str,
         default="all",
         help="Comma-separated DGP names or 'all'.",
+    )
+    parser.add_argument(
+        "--dgp-params",
+        type=str,
+        default="",
+        help="Comma-separated key=value pairs for parametric DGPs.",
     )
     parser.add_argument(
         "--n-train-list",
@@ -91,6 +98,10 @@ def main(argv: list[str] | None = None) -> int:
 
     n_train_list = _parse_int_list(args.n_train_list)
     seeds = _parse_int_list(args.seeds)
+    try:
+        dgp_params = parse_param_string(args.dgp_params)
+    except ValueError as exc:
+        parser.error(str(exc))
 
     planned = [(dgp, n_train, seed) for dgp in dgps for n_train in n_train_list for seed in seeds]
     if args.dry_run:
@@ -130,6 +141,7 @@ def main(argv: list[str] | None = None) -> int:
                 "n_test",
                 "seed",
                 "noise_std",
+                "dgp_params",
                 "backend",
                 "train_mse",
                 "train_rmse",
@@ -146,6 +158,7 @@ def main(argv: list[str] | None = None) -> int:
             run_id = f"{dgp}__n{n_train}__seed{seed}"
             config = RunConfig(
                 dgp=dgp,
+                dgp_params=dgp_params,
                 n_train=n_train,
                 n_test=args.n_test,
                 seed=seed,
@@ -167,6 +180,7 @@ def main(argv: list[str] | None = None) -> int:
                     "n_test": args.n_test,
                     "seed": seed,
                     "noise_std": args.noise_std,
+                    "dgp_params": json.dumps(dgp_params, sort_keys=True),
                     "backend": args.backend,
                     "train_mse": train["mse"],
                     "train_rmse": train["rmse"],
@@ -188,6 +202,7 @@ def main(argv: list[str] | None = None) -> int:
             "n_test": args.n_test,
             "seeds": seeds,
             "noise_std": args.noise_std,
+            "dgp_params": dgp_params,
             "backend": args.backend,
             "xgb": {
                 "max_depth": xgb_config.max_depth,

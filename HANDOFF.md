@@ -24,6 +24,12 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
 - Added DGP contribution checklist: `docs/dgp/ADDING_DGP.md`.
 - Added `dgp006_thresholded_sum` to extend complexity with a threshold-gated linear term.
 - Added `dgp007_multi_sine_interaction` to add multi-frequency + interaction complexity.
+- Added parametric DGP support (`--dgp-params`) and `dgp008_parametric_ripple`.
+- Documented parameterized DGP decision: `docs/adr/0003-parameterized-dgp-family.md`.
+- Ran dgp008 learning curves:
+  - XGBoost, `complexity=2.0`: `sweeps/loop07_dgp008_curve_xgb_agent03/report.md` (R2 ~0.49–0.55).
+  - XGBoost, `complexity=1.0`: `sweeps/loop08_dgp008_curve_xgb_agent03/report.md` (R2 ~0.82–0.85).
+  - baseline_mean, `complexity=2.0`: `sweeps/loop09_dgp008_curve_baseline_agent03/report.md` (R2 ~0.00).
 - Key checkpoints:
   - `8fad083` — env bootstrap + optional XGBoost
   - `f0bdfe5` — opt-in `report.md` for sweeps

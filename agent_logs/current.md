@@ -24,3 +24,10 @@ Result: Set default interaction_scale to 0.8 in code; aligned README, ADR, and H
 Unknowns: None; monitor for drift if new sweeps shift difficulty.
 Next: Optional confirmation sweep if future changes warrant it.
 Refs: dgp_xgb/dgps.py, README.md, docs/adr/0003-parameterized-dgp-family.md, HANDOFF.md
+
+## 2025-12-29 17:04 PT (agent05)
+Intent: Smoke-check the new default params on baseline backend.
+Action: Ran a small baseline_mean experiment for dgp008 with default params.
+Result: Success; artifacts at runs/smoke_dgp008_default08_agent05 (gitignored).
+Next: None.
+Refs: runs/smoke_dgp008_default08_agent05

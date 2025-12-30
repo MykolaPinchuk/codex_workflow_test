@@ -29,7 +29,9 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
 - Ran dgp008 learning curves:
   - XGBoost, `complexity=2.0`: `sweeps/loop07_dgp008_curve_xgb_agent03/report.md` (R2 ~0.49–0.55).
   - XGBoost, `complexity=1.0`: `sweeps/loop08_dgp008_curve_xgb_agent03/report.md` (R2 ~0.82–0.85).
+  - XGBoost, `complexity=2.5`: `sweeps/loop11_dgp008_curve_xgb_agent03/report.md` (R2 ~0.39–0.43).
   - baseline_mean, `complexity=2.0`: `sweeps/loop09_dgp008_curve_baseline_agent03/report.md` (R2 ~0.00).
+  - baseline_mean, `complexity=1.0`: `sweeps/loop10_dgp008_curve_baseline_agent03/report.md` (R2 ~-0.004 to -0.001).
 - Key checkpoints:
   - `8fad083` — env bootstrap + optional XGBoost
   - `f0bdfe5` — opt-in `report.md` for sweeps

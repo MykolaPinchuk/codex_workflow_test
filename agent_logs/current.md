@@ -50,3 +50,24 @@ Action: Updated HANDOFF.md with dgp008 curve notes.
 Result: Handoff includes summary of complexity=1.0/2.0 curves and baseline gap.
 Next: Commit changes and continue with any follow-up sweeps if needed.
 Refs: HANDOFF.md.
+
+## 2025-12-29 16:24
+Intent: Summarize parametric DGP results in ADR.
+Action: Added an empirical summary section to ADR 0003 with sweep pointers.
+Result: ADR includes complexity=1.0 vs 2.0 contrast and baseline gap notes.
+Next: Decide on follow-up sweeps or a new DGP family parameter.
+Refs: docs/adr/0003-parameterized-dgp-family.md.
+
+## 2025-12-29 16:26
+Intent: Extend dgp008 curves with baseline at complexity=1.0 and XGBoost at higher complexity.
+Action: Ran baseline_mean sweep for complexity=1.0 and XGBoost sweep for complexity=2.5 across n_train 200-2000, seeds 0-1.
+Result: Created sweep artifacts and reports under sweeps/loop10_dgp008_curve_baseline_agent03/ and sweeps/loop11_dgp008_curve_xgb_agent03/.
+Next: Review reports and update ADR summary if the complexity=2.5 behavior is noteworthy.
+Refs: sweeps/loop10_dgp008_curve_baseline_agent03/report.md, sweeps/loop11_dgp008_curve_xgb_agent03/report.md.
+
+## 2025-12-29 16:27
+Intent: Record new curve results in ADR and handoff notes.
+Action: Updated ADR 0003 and HANDOFF.md with complexity=2.5 and baseline=1.0 results.
+Result: Documentation reflects expanded curve set for dgp008.
+Next: Decide if further complexity scaling or parameter expansion is needed.
+Refs: docs/adr/0003-parameterized-dgp-family.md, HANDOFF.md.

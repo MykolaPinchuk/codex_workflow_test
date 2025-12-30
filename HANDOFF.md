@@ -1,8 +1,7 @@
 # HANDOFF
 
 ## Current slice
-Finalize default params for `dgp008_parametric_ripple` (currently `complexity=2.2, interaction_scale=0.9`) and decide if the slightly easier 0.8 band is preferable.
-Keep runs reproducible (configs/reports) while keeping bulky artifacts out of git.
+Confirm updated default params for `dgp008_parametric_ripple` (`complexity=2.2, interaction_scale=0.8`) and keep runs reproducible (configs/reports) while keeping bulky artifacts out of git.
 
 ## Invariants (do not break)
 - Follow `AGENTS.md` triggers and procedures.
@@ -36,7 +35,7 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - XGBoost, `complexity=2.2, interaction_scale=0.9`: `sweeps/loop15_dgp008_curve_xgb_agent04/report.md` (R2 ~0.44–0.52).
   - baseline_mean, `complexity=2.0`: `sweeps/loop09_dgp008_curve_baseline_agent03/report.md` (R2 ~0.00).
   - baseline_mean, `complexity=1.0`: `sweeps/loop10_dgp008_curve_baseline_agent03/report.md` (R2 ~-0.004 to -0.001).
-- Set default params for `dgp008_parametric_ripple` to `complexity=2.2, interaction_scale=0.9` and documented them in the ADR/README.
+- Set default params for `dgp008_parametric_ripple` to `complexity=2.2, interaction_scale=0.8` and documented them in the ADR/README.
 - Key checkpoints:
   - `8fad083` — env bootstrap + optional XGBoost
   - `f0bdfe5` — opt-in `report.md` for sweeps
@@ -54,11 +53,11 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - `f93758d` — agent04 ran 3-seed sweep for interaction_scale=0.8
 
 ### Next (ordered)
-1) Decide whether to keep the default `interaction_scale=0.9` or move lower (0.8) for a slightly easier band.
+1) If future runs drift too easy/hard, adjust `interaction_scale` around 0.8 with a small sweep.
 2) If runtime creeps up, trim grids first (seeds, n_train_list, n_test, rounds) before changing code.
 
 ### Open questions
-- Should the default `interaction_scale` remain 0.9 or move closer to 0.8?
+- None.
 
 ## Repro / smoke check
 - Commands run:

@@ -10,7 +10,7 @@ As complexity grows, some variations are best expressed as a parameterized famil
 - Expose a CLI/sweep flag `--dgp-params key=value[,key=value...]` to override defaults for parametric DGPs.
 - Record `dgp_params` in run configs and sweep metadata for reproducibility.
 - Set the default `complexity` for `dgp008_parametric_ripple` to 2.2 to target a moderate difficulty band.
-- Add `interaction_scale` to decouple interaction/gate strength from frequency scaling (default 0.9).
+- Add `interaction_scale` to decouple interaction/gate strength from frequency scaling (default 0.8).
 
 ## Consequences
 - We can introduce a single numbered DGP that represents a family (e.g., `dgp008_parametric_ripple`) without proliferating similar DGPs.

@@ -131,6 +131,8 @@ Pick the next DGP calibration target or add a new DGP; `dgp008_parametric_ripple
   - Ignore secret-like files (`.env`, `*.pem`, `*.key`, `id_rsa`, `id_ed25519`).
 - Branch state:
   - Local branch `dev` is ahead of `origin/dev` by multiple commits; do not push unless the human requests it.
+- Handoff commit:
+  - `9789dfc` — log rotation + state refresh (agent05)
 - Latest checkpoint:
   - `2983a86` — agent05 confirmed default-params curve sweep
 - If anything is intentionally uncommitted, list it here with a reason:

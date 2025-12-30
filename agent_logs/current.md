@@ -31,3 +31,10 @@ Action: Ran a small baseline_mean experiment for dgp008 with default params.
 Result: Success; artifacts at runs/smoke_dgp008_default08_agent05 (gitignored).
 Next: None.
 Refs: runs/smoke_dgp008_default08_agent05
+
+## 2025-12-29 17:05 PT (agent05)
+Intent: Keep HANDOFF repro notes current.
+Action: Recorded the new smoke check command and artifact path in HANDOFF.
+Result: HANDOFF updated.
+Next: None.
+Refs: HANDOFF.md

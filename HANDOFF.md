@@ -1,7 +1,7 @@
 # HANDOFF
 
 ## Current slice
-Lock in a default complexity for `dgp008_parametric_ripple` and assess whether a second parameter is needed for finer control under low-capacity XGBoost.
+Lock in a default complexity for `dgp008_parametric_ripple` and decide whether to tune the new `interaction_scale` parameter for finer control under low-capacity XGBoost.
 Keep runs reproducible (configs/reports) while keeping bulky artifacts out of git.
 
 ## Invariants (do not break)
@@ -26,11 +26,13 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
 - Added `dgp007_multi_sine_interaction` to add multi-frequency + interaction complexity.
 - Added parametric DGP support (`--dgp-params`) and `dgp008_parametric_ripple`.
 - Documented parameterized DGP decision: `docs/adr/0003-parameterized-dgp-family.md`.
+- Added `interaction_scale` to `dgp008_parametric_ripple` to decouple interaction/gate strength from frequency scaling.
 - Ran dgp008 learning curves:
   - XGBoost, `complexity=2.0`: `sweeps/loop07_dgp008_curve_xgb_agent03/report.md` (R2 ~0.49–0.55).
   - XGBoost, `complexity=1.0`: `sweeps/loop08_dgp008_curve_xgb_agent03/report.md` (R2 ~0.82–0.85).
   - XGBoost, `complexity=2.5`: `sweeps/loop11_dgp008_curve_xgb_agent03/report.md` (R2 ~0.39–0.43).
   - XGBoost, `complexity=2.2` (3 seeds): `sweeps/loop13_dgp008_curve_xgb_agent04/report.md` (R2 ~0.42–0.46).
+  - XGBoost, `complexity=2.2, interaction_scale=0.8`: `sweeps/loop14_dgp008_curve_xgb_agent04/report.md` (R2 ~0.47–0.55).
   - baseline_mean, `complexity=2.0`: `sweeps/loop09_dgp008_curve_baseline_agent03/report.md` (R2 ~0.00).
   - baseline_mean, `complexity=1.0`: `sweeps/loop10_dgp008_curve_baseline_agent03/report.md` (R2 ~-0.004 to -0.001).
 - Set default complexity for `dgp008_parametric_ripple` to 2.2 and documented it in the ADR/README.
@@ -46,11 +48,11 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - `d71dcb4` — agent03 updated dgp008 curve notes + ADR summary
 
 ### Next (ordered)
-1) Consider adding a second parameter (e.g., interaction scale) if single-parameter scaling is too coarse.
+1) Decide whether to adjust the default `interaction_scale` (currently 1.0) based on the 0.8 sweep.
 2) If runtime creeps up, trim grids first (seeds, n_train_list, n_test, rounds) before changing code.
 
 ### Open questions
-- Is a second parameter needed to decouple frequency scaling from interaction/gate strength?
+- Should the default `interaction_scale` remain 1.0 or move closer to 0.8?
 
 ## Repro / smoke check
 - Commands run:
@@ -75,6 +77,7 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop11_dgp008_curve_xgb_agent03 --dgps dgp008_parametric_ripple --dgp-params complexity=2.5 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
   - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop12_dgp008_curve_xgb_agent04 --dgps dgp008_parametric_ripple --dgp-params complexity=2.2 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
   - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop13_dgp008_curve_xgb_agent04 --dgps dgp008_parametric_ripple --dgp-params complexity=2.2 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1,2 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop14_dgp008_curve_xgb_agent04 --dgps dgp008_parametric_ripple --dgp-params complexity=2.2,interaction_scale=0.8 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
 - Outcome:
   - Succeeded; created local artifacts under `runs/smoke_agent01/`, `runs/smoke_xgb_agent01/`, and `sweeps/smoke_sweep_agent01/` (gitignored).
 

@@ -36,3 +36,10 @@ Action: Ran a 3-seed XGBoost sweep for dgp008_parametric_ripple at complexity=2.
 Result: test R2 ~0.42–0.46 across n_train 200–2000; report at sweeps/loop13_dgp008_curve_xgb_agent04/report.md.
 Next: Assess whether to introduce a second parameter for finer control.
 Refs: sweeps/loop13_dgp008_curve_xgb_agent04/report.md; HANDOFF.md; docs/adr/0003-parameterized-dgp-family.md.
+
+## 2025-12-29 16:45
+Intent: Add a second DGP008 parameter to decouple interaction/gate strength.
+Action: Added `interaction_scale` to dgp008 (default 1.0) and ran a sweep at complexity=2.2, interaction_scale=0.8.
+Result: R2 improved to ~0.47–0.55; report at sweeps/loop14_dgp008_curve_xgb_agent04/report.md.
+Next: Decide whether to shift default interaction_scale toward 0.8.
+Refs: dgp_xgb/dgps.py; docs/adr/0003-parameterized-dgp-family.md; README.md; HANDOFF.md; sweeps/loop14_dgp008_curve_xgb_agent04/report.md.

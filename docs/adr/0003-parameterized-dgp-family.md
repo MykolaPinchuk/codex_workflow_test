@@ -28,6 +28,7 @@ As complexity grows, some variations are best expressed as a parameterized famil
   - baseline_mean at `complexity=2.0`: test R2 ~0.00 (`sweeps/loop09_dgp008_curve_baseline_agent03/report.md`).
   - baseline_mean at `complexity=1.0`: test R2 ~-0.004 to -0.001 (`sweeps/loop10_dgp008_curve_baseline_agent03/report.md`).
 - `dgp009_radial_gate` defaults (`complexity=0.9, interaction_scale=1.0`) yield test R2 ~0.44–0.54 across n_train 200–2000 (`sweeps/loop24_dgp009_default_c0p9_xgb_agent06/report.md`).
+- `dgp009_radial_gate` baseline_mean at defaults yields test R2 ~-0.013 to -0.001 (`sweeps/loop25_dgp009_default_c0p9_baseline_agent06/report.md`).
 
 ## Alternatives considered
 - Use parameterized DGPs only (drop numbered registry). Rejected: complexity ordering and historical continuity are useful.

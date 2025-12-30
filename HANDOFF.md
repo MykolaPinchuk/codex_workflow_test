@@ -1,7 +1,7 @@
 # HANDOFF
 
 ## Current slice
-Pick the next DGP calibration target or add a new DGP; `dgp008_parametric_ripple` defaults are now confirmed at `complexity=2.2, interaction_scale=0.8`.
+Calibrate `dgp010_piecewise_switch` (review the initial curve and decide whether to parameterize or run baseline sweeps).
 
 ## Invariants (do not break)
 - Follow `AGENTS.md` triggers and procedures.
@@ -34,6 +34,13 @@ Pick the next DGP calibration target or add a new DGP; `dgp008_parametric_ripple
 - Recommended dgp009 default `complexity=0.9` based on grid (R2 ~0.51 across n_train 200–2000); updated defaults accordingly.
 - Confirmed dgp009 default params with 3-seed sweep: `sweeps/loop24_dgp009_default_c0p9_xgb_agent06/report.md`.
 - Default sweep summary (XGBoost, 3 seeds): test R2 ~0.44–0.54 across n_train 200–2000.
+- Baseline_mean sweep for dgp009 defaults: `sweeps/loop25_dgp009_default_c0p9_baseline_agent06/report.md`.
+- Baseline summary (3 seeds): test R2 ~-0.013 to -0.001 across n_train 200–2000 (dgp009 defaults).
+- Calibrated dgp009 interaction_scale at complexity=0.9:
+  - `interaction_scale=0.8`: test R2 ~0.48–0.55 (`sweeps/loop26_dgp009_c0p9_s0p8_xgb_agent06/report.md`).
+  - `interaction_scale=1.2`: test R2 ~0.39–0.50 (`sweeps/loop27_dgp009_c0p9_s1p2_xgb_agent06/report.md`).
+- Recommendation: keep `interaction_scale=1.0` for dgp009 defaults to stay mid-band.
+- Added `dgp010_piecewise_switch` and ran initial XGBoost curve: `sweeps/loop28_dgp010_curve_xgb_agent06/report.md`.
 - Ran dgp008 learning curves:
   - XGBoost, `complexity=2.0`: `sweeps/loop07_dgp008_curve_xgb_agent03/report.md` (R2 ~0.49–0.55).
   - XGBoost, `complexity=1.0`: `sweeps/loop08_dgp008_curve_xgb_agent03/report.md` (R2 ~0.82–0.85).
@@ -63,9 +70,12 @@ Pick the next DGP calibration target or add a new DGP; `dgp008_parametric_ripple
   - `f93758d` — agent04 ran 3-seed sweep for interaction_scale=0.8
   - `1d603e8` — agent05 set default interaction_scale=0.8
   - `2983a86` — agent05 confirmed default-params curve sweep
+  - `ebacd3e` — agent06 added dgp009 params + initial sweep
+  - `95e8d5b` — agent06 set dgp009 default params
+  - `ae01c6b` — agent06 documented dgp009 default results
 
 ### Next (ordered)
-1) Select the next DGP candidate or complexity band to calibrate.
+1) Review `sweeps/loop28_dgp010_curve_xgb_agent06/report.md` and decide whether `dgp010_piecewise_switch` needs parameterization or a baseline_mean sweep.
 2) If runtime creeps up, trim grids first (seeds, n_train_list, n_test, rounds) before changing code.
 
 ### Open questions
@@ -100,6 +110,19 @@ Pick the next DGP calibration target or add a new DGP; `dgp008_parametric_ripple
   - `python3 -m dgp_xgb --dgp dgp008_parametric_ripple --backend baseline_mean --n-train 100 --n-test 50 --run-id smoke_dgp008_default08_agent05`
   - `.venv/bin/python -m dgp_xgb.sweep --sweep-id smoke_dgp008_default08_xgb_agent05 --dgps dgp008_parametric_ripple --n-train-list 200,500 --n-test 200 --seeds 0 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
   - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop17_dgp008_default08_curve_xgb_agent05 --dgps dgp008_parametric_ripple --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1,2 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `python3 -m dgp_xgb --list-dgps`
+  - `python3 -m dgp_xgb --dgp dgp009_radial_gate --backend baseline_mean --n-train 200 --n-test 100 --run-id smoke_dgp009_agent06`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop18_dgp009_curve_xgb_agent06 --dgps dgp009_radial_gate --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1,2 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop19_dgp009_c0p8_xgb_agent06 --dgps dgp009_radial_gate --dgp-params complexity=0.8,interaction_scale=1.0 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop20_dgp009_c1p2_xgb_agent06 --dgps dgp009_radial_gate --dgp-params complexity=1.2,interaction_scale=1.0 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop21_dgp009_c0p9_xgb_agent06 --dgps dgp009_radial_gate --dgp-params complexity=0.9,interaction_scale=1.0 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop22_dgp009_c1p0_xgb_agent06 --dgps dgp009_radial_gate --dgp-params complexity=1.0,interaction_scale=1.0 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop23_dgp009_c1p1_xgb_agent06 --dgps dgp009_radial_gate --dgp-params complexity=1.1,interaction_scale=1.0 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop24_dgp009_default_c0p9_xgb_agent06 --dgps dgp009_radial_gate --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1,2 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop25_dgp009_default_c0p9_baseline_agent06 --dgps dgp009_radial_gate --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1,2 --noise-std 0.1 --backend baseline_mean --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop26_dgp009_c0p9_s0p8_xgb_agent06 --dgps dgp009_radial_gate --dgp-params complexity=0.9,interaction_scale=0.8 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop27_dgp009_c0p9_s1p2_xgb_agent06 --dgps dgp009_radial_gate --dgp-params complexity=0.9,interaction_scale=1.2 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop28_dgp010_curve_xgb_agent06 --dgps dgp010_piecewise_switch --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1,2 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
 - Outcome:
   - Succeeded; created local artifacts under `runs/smoke_agent01/`, `runs/smoke_xgb_agent01/`, `runs/smoke_dgp008_default08_agent05/`, `sweeps/smoke_sweep_agent01/`, `sweeps/smoke_dgp008_default08_xgb_agent05/`, and `sweeps/loop17_dgp008_default08_curve_xgb_agent05/` (gitignored).
 
@@ -140,10 +163,12 @@ Pick the next DGP calibration target or add a new DGP; `dgp008_parametric_ripple
 - Branch state:
   - Local branch `dev` is ahead of `origin/dev` by multiple commits; do not push unless the human requests it.
 - Handoff commit:
-  - `9789dfc` — log rotation + state refresh (agent05)
+  - (pending agent06 handoff commit)
 - Latest checkpoint:
-  - `2983a86` — agent05 confirmed default-params curve sweep
+  - `ae01c6b` — agent06 documented dgp009 default params/results
 - If anything is intentionally uncommitted, list it here with a reason:
   - Local `sweeps/` artifacts from agent02 and agent03 runs (gitignored).
   - Local `sweeps/` artifacts from agent04 runs (`loop12`–`loop16`, gitignored).
   - Local `runs/` + `sweeps/` artifacts from agent05 smoke/default sweeps (`smoke_dgp008_default08_agent05`, `smoke_dgp008_default08_xgb_agent05`, `loop17_dgp008_default08_curve_xgb_agent05`, gitignored).
+  - Local `runs/` artifacts from agent06 (`runs/smoke_dgp009_agent06`, gitignored).
+  - Local `sweeps/` artifacts from agent06 (`loop18`–`loop28`, gitignored).

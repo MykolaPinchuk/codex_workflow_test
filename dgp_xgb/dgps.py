@@ -202,6 +202,34 @@ def _dgp009_radial_gate(
     return features, targets
 
 
+def _dgp010_piecewise_switch(
+    n: int, seed: int, noise_std: float, params: dict[str, float]
+) -> tuple[list[list[float]], list[float]]:
+    rng = random.Random(seed)
+    n_features = 8
+    features: list[list[float]] = []
+    targets: list[float] = []
+    for _ in range(n):
+        row = _uniform_features(rng, n_features)
+        if row[2] > 0.0:
+            y_value = (
+                math.sin(3.0 * row[0])
+                + 0.6 * (row[1] ** 2)
+                + 0.2 * row[6]
+                + _gaussian_noise(rng, noise_std)
+            )
+        else:
+            y_value = (
+                0.7 * row[3] * row[4]
+                + 0.3 * abs(row[5])
+                - 0.2 * row[6]
+                + _gaussian_noise(rng, noise_std)
+            )
+        features.append(row)
+        targets.append(y_value)
+    return features, targets
+
+
 _DGPS: list[DGP] = [
     DGP(
         name="dgp001_linear",
@@ -258,6 +286,12 @@ _DGPS: list[DGP] = [
         n_features=8,
         generate=_dgp009_radial_gate,
         default_params={"complexity": 0.9, "interaction_scale": 1.0},
+    ),
+    DGP(
+        name="dgp010_piecewise_switch",
+        description="Piecewise switch between sinusoid+quadratic and interaction-based regimes.",
+        n_features=8,
+        generate=_dgp010_piecewise_switch,
     ),
 ]
 

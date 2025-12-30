@@ -1,7 +1,7 @@
 # HANDOFF
 
 ## Current slice
-Lock in a default complexity for `dgp008_parametric_ripple` and confirm whether the default `interaction_scale` should stay at 0.9 or move lower for the desired difficulty band.
+Finalize default params for `dgp008_parametric_ripple` (currently `complexity=2.2, interaction_scale=0.9`) and decide if the slightly easier 0.8 band is preferable.
 Keep runs reproducible (configs/reports) while keeping bulky artifacts out of git.
 
 ## Invariants (do not break)
@@ -19,7 +19,7 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
 - Added optional sweep reports: `python3 -m dgp_xgb.sweep --report` and `--report-only` in `dgp_xgb/sweep.py`.
 - Added reproducible local environment bootstrap: `scripts/bootstrap.sh`.
 - Added dependency split: `requirements.txt` (minimal) and `requirements-xgb.txt` (optional XGBoost).
-- Ignored run artifacts: `.gitignore` (includes `runs/` and `sweeps/`).
+- Ignored run artifacts and secrets: `.gitignore` (includes `runs/`, `sweeps/`, `.env`, key files).
 - Documented protocol decision: `docs/adr/0002-dgp-and-experiment-protocol.md`.
 - Added DGP contribution checklist: `docs/dgp/ADDING_DGP.md`.
 - Added `dgp006_thresholded_sum` to extend complexity with a threshold-gated linear term.
@@ -47,6 +47,11 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - `14d2850` — agent02 ran dgp007 sweeps + docs
   - `b3bd286` — agent03 added parametric DGP support + dgp008
   - `d71dcb4` — agent03 updated dgp008 curve notes + ADR summary
+  - `9ed292a` — agent04 set dgp008 default complexity=2.2
+  - `142928f` — agent04 confirmed complexity=2.2 with 3 seeds
+  - `0fc169c` — agent04 added interaction_scale param
+  - `8488cac` — agent04 set default interaction_scale=0.9
+  - `f93758d` — agent04 ran 3-seed sweep for interaction_scale=0.8
 
 ### Next (ordered)
 1) Decide whether to keep the default `interaction_scale=0.9` or move lower (0.8) for a slightly easier band.
@@ -117,9 +122,11 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
 ## Git notes (handoff)
 - `.gitignore` updates made:
   - Ignore local artifacts under `runs/` and `sweeps/`.
+  - Ignore secret-like files (`.env`, `*.pem`, `*.key`, `id_rsa`, `id_ed25519`).
 - Branch state:
   - Local branch `dev` is ahead of `origin/dev` by multiple commits; do not push unless the human requests it.
 - Latest checkpoint:
-  - `d71dcb4` — agent03 updated dgp008 curve notes + ADR summary
+  - `f93758d` — agent04 ran 3-seed sweep for interaction_scale=0.8
 - If anything is intentionally uncommitted, list it here with a reason:
   - Local `sweeps/` artifacts from agent02 and agent03 runs (gitignored).
+  - Local `sweeps/` artifacts from agent04 runs (`loop12`–`loop16`, gitignored).

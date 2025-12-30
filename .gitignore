@@ -20,3 +20,10 @@ ENV/
 # Experiment outputs (do not commit)
 runs/
 sweeps/
+
+# Secrets (never commit)
+.env
+*.pem
+*.key
+id_rsa
+id_ed25519

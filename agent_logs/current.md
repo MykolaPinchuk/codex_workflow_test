@@ -45,3 +45,10 @@ Action: Ran a tiny sweep for dgp008 default params with xgboost backend.
 Result: Success; report at sweeps/smoke_dgp008_default08_xgb_agent05/report.md (R2 ~0.44 at n=200, ~0.54 at n=500).
 Next: None.
 Refs: sweeps/smoke_dgp008_default08_xgb_agent05/report.md, HANDOFF.md
+
+## 2025-12-29 17:11 PT (agent05)
+Intent: Confirm the default dgp008 curve with multiple seeds.
+Action: Ran a 3-seed XGBoost sweep using default params across n_train 200–2000.
+Result: Success; report at sweeps/loop17_dgp008_default08_curve_xgb_agent05/report.md (R2 ~0.47–0.52).
+Next: None.
+Refs: sweeps/loop17_dgp008_default08_curve_xgb_agent05/report.md, HANDOFF.md

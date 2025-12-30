@@ -32,6 +32,7 @@ Confirm updated default params for `dgp008_parametric_ripple` (`complexity=2.2, 
   - XGBoost, `complexity=2.5`: `sweeps/loop11_dgp008_curve_xgb_agent03/report.md` (R2 ~0.39–0.43).
   - XGBoost, `complexity=2.2` (3 seeds): `sweeps/loop13_dgp008_curve_xgb_agent04/report.md` (R2 ~0.42–0.46).
   - XGBoost, `complexity=2.2, interaction_scale=0.8` (3 seeds): `sweeps/loop16_dgp008_curve_xgb_agent04/report.md` (R2 ~0.47–0.52).
+  - XGBoost, default params (3 seeds): `sweeps/loop17_dgp008_default08_curve_xgb_agent05/report.md` (R2 ~0.47–0.52).
   - XGBoost, `complexity=2.2, interaction_scale=0.9`: `sweeps/loop15_dgp008_curve_xgb_agent04/report.md` (R2 ~0.44–0.52).
   - baseline_mean, `complexity=2.0`: `sweeps/loop09_dgp008_curve_baseline_agent03/report.md` (R2 ~0.00).
   - baseline_mean, `complexity=1.0`: `sweeps/loop10_dgp008_curve_baseline_agent03/report.md` (R2 ~-0.004 to -0.001).
@@ -88,8 +89,9 @@ Confirm updated default params for `dgp008_parametric_ripple` (`complexity=2.2, 
   - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop16_dgp008_curve_xgb_agent04 --dgps dgp008_parametric_ripple --dgp-params complexity=2.2,interaction_scale=0.8 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1,2 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
   - `python3 -m dgp_xgb --dgp dgp008_parametric_ripple --backend baseline_mean --n-train 100 --n-test 50 --run-id smoke_dgp008_default08_agent05`
   - `.venv/bin/python -m dgp_xgb.sweep --sweep-id smoke_dgp008_default08_xgb_agent05 --dgps dgp008_parametric_ripple --n-train-list 200,500 --n-test 200 --seeds 0 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop17_dgp008_default08_curve_xgb_agent05 --dgps dgp008_parametric_ripple --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1,2 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
 - Outcome:
-  - Succeeded; created local artifacts under `runs/smoke_agent01/`, `runs/smoke_xgb_agent01/`, `runs/smoke_dgp008_default08_agent05/`, `sweeps/smoke_sweep_agent01/`, and `sweeps/smoke_dgp008_default08_xgb_agent05/` (gitignored).
+  - Succeeded; created local artifacts under `runs/smoke_agent01/`, `runs/smoke_xgb_agent01/`, `runs/smoke_dgp008_default08_agent05/`, `sweeps/smoke_sweep_agent01/`, `sweeps/smoke_dgp008_default08_xgb_agent05/`, and `sweeps/loop17_dgp008_default08_curve_xgb_agent05/` (gitignored).
 
 ## First loop (fast)
 - Baseline (≈0.1s): `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop01_fast_baseline_agent01 --dgps all --n-train-list 2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend baseline_mean --report`

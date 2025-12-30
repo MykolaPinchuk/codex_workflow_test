@@ -38,3 +38,10 @@ Action: Recorded the new smoke check command and artifact path in HANDOFF.
 Result: HANDOFF updated.
 Next: None.
 Refs: HANDOFF.md
+
+## 2025-12-29 17:08 PT (agent05)
+Intent: Smoke-check the new dgp008 default with XGBoost.
+Action: Ran a tiny sweep for dgp008 default params with xgboost backend.
+Result: Success; report at sweeps/smoke_dgp008_default08_xgb_agent05/report.md (R2 ~0.44 at n=200, ~0.54 at n=500).
+Next: None.
+Refs: sweeps/smoke_dgp008_default08_xgb_agent05/report.md, HANDOFF.md

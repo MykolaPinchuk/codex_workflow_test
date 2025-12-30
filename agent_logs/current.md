@@ -36,3 +36,24 @@ Action: Ran 3-seed learning-curve sweep for dgp009; added complexity/interaction
 Result: Sweep artifacts at sweeps/loop18_dgp009_curve_xgb_agent06; dgp009 now accepts --dgp-params complexity,interaction_scale.
 Next: Review sweep report to place difficulty band and adjust defaults if needed.
 Refs: sweeps/loop18_dgp009_curve_xgb_agent06/report.md, dgp_xgb/dgps.py, HANDOFF.md.
+
+## 2025-12-29 17:37 PST (agent06)
+Intent: Run small dgp009 parameter grid.
+Action: Ran XGBoost sweeps at complexity=0.8 and 1.2 (interaction_scale=1.0) with 2 seeds.
+Result: New sweep artifacts at sweeps/loop19_dgp009_c0p8_xgb_agent06 and sweeps/loop20_dgp009_c1p2_xgb_agent06 (gitignored).
+Next: Review reports to decide preferred default complexity/interaction_scale.
+Refs: sweeps/loop19_dgp009_c0p8_xgb_agent06/report.md, sweeps/loop20_dgp009_c1p2_xgb_agent06/report.md, HANDOFF.md.
+
+## 2025-12-29 17:39 PST (agent06)
+Intent: Run tighter dgp009 complexity grid sweeps.
+Action: Ran XGBoost sweeps at complexity=0.9, 1.0, 1.1 (interaction_scale=1.0) with 2 seeds.
+Result: New sweep artifacts at sweeps/loop21_dgp009_c0p9_xgb_agent06, sweeps/loop22_dgp009_c1p0_xgb_agent06, sweeps/loop23_dgp009_c1p1_xgb_agent06 (gitignored).
+Next: Review reports to pick default complexity and update defaults/ADR if needed.
+Refs: sweeps/loop21_dgp009_c0p9_xgb_agent06/report.md, sweeps/loop22_dgp009_c1p0_xgb_agent06/report.md, sweeps/loop23_dgp009_c1p1_xgb_agent06/report.md, HANDOFF.md.
+
+## 2025-12-29 17:41 PST (agent06)
+Intent: Recommend default dgp009 parameters.
+Action: Reviewed dgp009 grid reports and set default complexity to 0.9.
+Result: dgp009 defaults now complexity=0.9, interaction_scale=1.0; recommendation noted in HANDOFF.
+Next: Optional multi-seed confirmation run at new defaults if needed.
+Refs: dgp_xgb/dgps.py, HANDOFF.md, sweeps/loop21_dgp009_c0p9_xgb_agent06/report.md.

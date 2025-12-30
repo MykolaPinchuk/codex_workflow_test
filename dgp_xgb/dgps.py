@@ -257,7 +257,7 @@ _DGPS: list[DGP] = [
         description="Parametric radial ridge; tune `complexity` and `interaction_scale` via --dgp-params.",
         n_features=8,
         generate=_dgp009_radial_gate,
-        default_params={"complexity": 1.0, "interaction_scale": 1.0},
+        default_params={"complexity": 0.9, "interaction_scale": 1.0},
     ),
 ]
 

@@ -43,3 +43,10 @@ Action: Added `interaction_scale` to dgp008 (default 1.0) and ran a sweep at com
 Result: R2 improved to ~0.47–0.55; report at sweeps/loop14_dgp008_curve_xgb_agent04/report.md.
 Next: Decide whether to shift default interaction_scale toward 0.8.
 Refs: dgp_xgb/dgps.py; docs/adr/0003-parameterized-dgp-family.md; README.md; HANDOFF.md; sweeps/loop14_dgp008_curve_xgb_agent04/report.md.
+
+## 2025-12-29 16:47
+Intent: Calibrate the new interaction_scale default for dgp008.
+Action: Ran a sweep at interaction_scale=0.9 and updated default params/docs to match the moderate band.
+Result: R2 ~0.44–0.52 at complexity=2.2; default interaction_scale now 0.9.
+Next: Decide whether to shift default further toward 0.8 if a higher R2 band is preferred.
+Refs: dgp_xgb/dgps.py; sweeps/loop15_dgp008_curve_xgb_agent04/report.md; docs/adr/0003-parameterized-dgp-family.md; README.md; HANDOFF.md.

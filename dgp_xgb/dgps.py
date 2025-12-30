@@ -148,7 +148,7 @@ def _dgp008_parametric_ripple(
     rng = random.Random(seed)
     n_features = 7
     complexity = max(0.5, params.get("complexity", 2.2))
-    interaction_scale = max(0.0, params.get("interaction_scale", 1.0))
+    interaction_scale = max(0.0, params.get("interaction_scale", 0.9))
     freq_primary = 2.0 * complexity
     freq_secondary = 3.5 * complexity
     interaction = 0.3 * complexity * interaction_scale
@@ -219,7 +219,7 @@ _DGPS: list[DGP] = [
         description="Parametric family; tune `complexity` and `interaction_scale` via --dgp-params.",
         n_features=7,
         generate=_dgp008_parametric_ripple,
-        default_params={"complexity": 2.2, "interaction_scale": 1.0},
+        default_params={"complexity": 2.2, "interaction_scale": 0.9},
     ),
 ]
 

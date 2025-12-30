@@ -50,3 +50,10 @@ Action: Ran a sweep at interaction_scale=0.9 and updated default params/docs to 
 Result: R2 ~0.44–0.52 at complexity=2.2; default interaction_scale now 0.9.
 Next: Decide whether to shift default further toward 0.8 if a higher R2 band is preferred.
 Refs: dgp_xgb/dgps.py; sweeps/loop15_dgp008_curve_xgb_agent04/report.md; docs/adr/0003-parameterized-dgp-family.md; README.md; HANDOFF.md.
+
+## 2025-12-29 16:48
+Intent: Validate interaction_scale=0.8 with an additional seed.
+Action: Ran a 3-seed sweep at complexity=2.2, interaction_scale=0.8.
+Result: R2 ~0.47–0.52 across n_train 200–2000; report at sweeps/loop16_dgp008_curve_xgb_agent04/report.md.
+Next: Compare defaults 0.8 vs 0.9; both land near ~0.5 R2.
+Refs: sweeps/loop16_dgp008_curve_xgb_agent04/report.md; docs/adr/0003-parameterized-dgp-family.md; HANDOFF.md.

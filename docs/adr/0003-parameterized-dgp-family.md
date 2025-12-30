@@ -22,7 +22,7 @@ As complexity grows, some variations are best expressed as a parameterized famil
   - `complexity=1.0`: test R2 ~0.82–0.85 across n_train 200–2000 (`sweeps/loop08_dgp008_curve_xgb_agent03/report.md`).
   - `complexity=2.0`: test R2 ~0.49–0.55 across n_train 200–2000 (`sweeps/loop07_dgp008_curve_xgb_agent03/report.md`).
   - `complexity=2.2`: test R2 ~0.42–0.46 across n_train 200–2000 (`sweeps/loop13_dgp008_curve_xgb_agent04/report.md`).
-  - `complexity=2.2, interaction_scale=0.8`: test R2 ~0.47–0.55 across n_train 200–2000 (`sweeps/loop14_dgp008_curve_xgb_agent04/report.md`).
+  - `complexity=2.2, interaction_scale=0.8`: test R2 ~0.47–0.52 across n_train 200–2000 (`sweeps/loop16_dgp008_curve_xgb_agent04/report.md`).
   - `complexity=2.2, interaction_scale=0.9`: test R2 ~0.44–0.52 across n_train 200–2000 (`sweeps/loop15_dgp008_curve_xgb_agent04/report.md`).
   - `complexity=2.5`: test R2 ~0.39–0.43 across n_train 200–2000 (`sweeps/loop11_dgp008_curve_xgb_agent03/report.md`).
   - baseline_mean at `complexity=2.0`: test R2 ~0.00 (`sweeps/loop09_dgp008_curve_baseline_agent03/report.md`).

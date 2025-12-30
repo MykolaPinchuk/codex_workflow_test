@@ -29,3 +29,10 @@ Action: Set dgp008 default complexity to 2.2 and updated ADR/README/HANDOFF with
 Result: Default complexity now 2.2; documentation references loop12 results.
 Next: Consider whether a second parameter is needed to decouple scaling effects.
 Refs: dgp_xgb/dgps.py; docs/adr/0003-parameterized-dgp-family.md; README.md; HANDOFF.md.
+
+## 2025-12-29 16:42
+Intent: Confirm default complexity=2.2 with an extra seed.
+Action: Ran a 3-seed XGBoost sweep for dgp008_parametric_ripple at complexity=2.2.
+Result: test R2 ~0.42–0.46 across n_train 200–2000; report at sweeps/loop13_dgp008_curve_xgb_agent04/report.md.
+Next: Assess whether to introduce a second parameter for finer control.
+Refs: sweeps/loop13_dgp008_curve_xgb_agent04/report.md; HANDOFF.md; docs/adr/0003-parameterized-dgp-family.md.

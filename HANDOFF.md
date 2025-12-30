@@ -1,7 +1,7 @@
 # HANDOFF
 
 ## Current slice
-Start iterating on increasingly complex regression DGPs (next: `dgp008_...`) and measure learnability with a low-capacity XGBoost baseline.
+Iterate on parameterized DGPs (starting with `dgp008_parametric_ripple`) to map complexity vs learnability under low-capacity XGBoost.
 Keep runs reproducible (configs/reports) while keeping bulky artifacts out of git.
 
 ## Invariants (do not break)
@@ -40,14 +40,16 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - `a553b83` — agent02 added `dgp006_thresholded_sum`
   - `8b5acc0` — agent02 added `dgp007_multi_sine_interaction`
   - `14d2850` — agent02 ran dgp007 sweeps + docs
+  - `b3bd286` — agent03 added parametric DGP support + dgp008
+  - `d71dcb4` — agent03 updated dgp008 curve notes + ADR summary
 
 ### Next (ordered)
-1) Add `dgp008_...` (one incremental complexity step), update `dgp_xgb/dgps.py`, and run the fast loop to compare vs existing DGPs.
-2) Periodically run a small learning-curve sweep (more than one `n_train`) and use `--report` for a readable summary.
+1) Decide on the target complexity range for `dgp008_parametric_ripple` (e.g., 2.0 vs 2.5 vs 3.0) and run a small curve to pick a default.
+2) Consider adding a second parameter (e.g., interaction scale) if single-parameter scaling is too coarse.
 3) If runtime creeps up, trim grids first (seeds, n_train_list, n_test, rounds) before changing code.
 
 ### Open questions
-- Should complexity be represented as separate numbered DGPs only, or via a parameterized DGP family (e.g., `dgp010_family --complexity k`)?
+- Do we want to standardize a default `complexity` for `dgp008_parametric_ripple` (or treat it as always user-specified)?
 
 ## Repro / smoke check
 - Commands run:
@@ -65,6 +67,11 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop04_dgp007_curve_xgb_agent02 --dgps dgp007_multi_sine_interaction --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
   - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop05_dgp007_curve_baseline_agent02 --dgps dgp007_multi_sine_interaction --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0 --noise-std 0.1 --backend baseline_mean --report`
   - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop06_dgp007_curve_xgb_agent02 --dgps dgp007_multi_sine_interaction --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1,2 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop07_dgp008_curve_xgb_agent03 --dgps dgp008_parametric_ripple --dgp-params complexity=2.0 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop08_dgp008_curve_xgb_agent03 --dgps dgp008_parametric_ripple --dgp-params complexity=1.0 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop09_dgp008_curve_baseline_agent03 --dgps dgp008_parametric_ripple --dgp-params complexity=2.0 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend baseline_mean --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop10_dgp008_curve_baseline_agent03 --dgps dgp008_parametric_ripple --dgp-params complexity=1.0 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend baseline_mean --report`
+  - `.venv/bin/python -m dgp_xgb.sweep --sweep-id loop11_dgp008_curve_xgb_agent03 --dgps dgp008_parametric_ripple --dgp-params complexity=2.5 --n-train-list 200,500,1000,2000 --n-test 1000 --seeds 0,1 --noise-std 0.1 --backend xgboost --xgb-max-depth 2 --xgb-rounds 25 --report`
 - Outcome:
   - Succeeded; created local artifacts under `runs/smoke_agent01/`, `runs/smoke_xgb_agent01/`, and `sweeps/smoke_sweep_agent01/` (gitignored).
 
@@ -103,5 +110,7 @@ Keep runs reproducible (configs/reports) while keeping bulky artifacts out of gi
   - Ignore local artifacts under `runs/` and `sweeps/`.
 - Branch state:
   - Local branch `dev` is ahead of `origin/dev` by multiple commits; do not push unless the human requests it.
+- Latest checkpoint:
+  - `d71dcb4` — agent03 updated dgp008 curve notes + ADR summary
 - If anything is intentionally uncommitted, list it here with a reason:
-  - Local `sweeps/` artifacts from agent02 runs (gitignored).
+  - Local `sweeps/` artifacts from agent02 and agent03 runs (gitignored).

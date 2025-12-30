@@ -9,3 +9,4 @@ Format:
 - 2025-12-28_agent02.md — dgp006/dgp007 + sweeps + learning curves (handoff)
 - 2025-12-29_agent03.md — parametric dgp008 sweeps + docs (checkpoint d71dcb4)
 - 2025-12-29_agent04.md — dgp008 default params + interaction_scale calibration
+- 2025-12-29_agent05.md — set dgp008 default interaction_scale=0.8 + confirm sweeps

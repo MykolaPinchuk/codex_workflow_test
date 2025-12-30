@@ -1,7 +1,7 @@
 # HANDOFF
 
 ## Current slice
-Confirm updated default params for `dgp008_parametric_ripple` (`complexity=2.2, interaction_scale=0.8`) and keep runs reproducible (configs/reports) while keeping bulky artifacts out of git.
+Pick the next DGP calibration target or add a new DGP; `dgp008_parametric_ripple` defaults are now confirmed at `complexity=2.2, interaction_scale=0.8`.
 
 ## Invariants (do not break)
 - Follow `AGENTS.md` triggers and procedures.
@@ -37,6 +37,7 @@ Confirm updated default params for `dgp008_parametric_ripple` (`complexity=2.2, 
   - baseline_mean, `complexity=2.0`: `sweeps/loop09_dgp008_curve_baseline_agent03/report.md` (R2 ~0.00).
   - baseline_mean, `complexity=1.0`: `sweeps/loop10_dgp008_curve_baseline_agent03/report.md` (R2 ~-0.004 to -0.001).
 - Set default params for `dgp008_parametric_ripple` to `complexity=2.2, interaction_scale=0.8` and documented them in the ADR/README.
+- Confirmed default params with a 3-seed XGBoost sweep: `sweeps/loop17_dgp008_default08_curve_xgb_agent05/report.md`.
 - Key checkpoints:
   - `8fad083` — env bootstrap + optional XGBoost
   - `f0bdfe5` — opt-in `report.md` for sweeps
@@ -53,9 +54,10 @@ Confirm updated default params for `dgp008_parametric_ripple` (`complexity=2.2, 
   - `8488cac` — agent04 set default interaction_scale=0.9
   - `f93758d` — agent04 ran 3-seed sweep for interaction_scale=0.8
   - `1d603e8` — agent05 set default interaction_scale=0.8
+  - `2983a86` — agent05 confirmed default-params curve sweep
 
 ### Next (ordered)
-1) If future runs drift too easy/hard, adjust `interaction_scale` around 0.8 with a small sweep.
+1) Select the next DGP candidate or complexity band to calibrate.
 2) If runtime creeps up, trim grids first (seeds, n_train_list, n_test, rounds) before changing code.
 
 ### Open questions
@@ -130,7 +132,8 @@ Confirm updated default params for `dgp008_parametric_ripple` (`complexity=2.2, 
 - Branch state:
   - Local branch `dev` is ahead of `origin/dev` by multiple commits; do not push unless the human requests it.
 - Latest checkpoint:
-  - `f93758d` — agent04 ran 3-seed sweep for interaction_scale=0.8
+  - `2983a86` — agent05 confirmed default-params curve sweep
 - If anything is intentionally uncommitted, list it here with a reason:
   - Local `sweeps/` artifacts from agent02 and agent03 runs (gitignored).
   - Local `sweeps/` artifacts from agent04 runs (`loop12`–`loop16`, gitignored).
+  - Local `runs/` + `sweeps/` artifacts from agent05 smoke/default sweeps (`smoke_dgp008_default08_agent05`, `smoke_dgp008_default08_xgb_agent05`, `loop17_dgp008_default08_curve_xgb_agent05`, gitignored).

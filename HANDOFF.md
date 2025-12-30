@@ -51,6 +51,7 @@ Confirm updated default params for `dgp008_parametric_ripple` (`complexity=2.2, 
   - `0fc169c` — agent04 added interaction_scale param
   - `8488cac` — agent04 set default interaction_scale=0.9
   - `f93758d` — agent04 ran 3-seed sweep for interaction_scale=0.8
+  - `1d603e8` — agent05 set default interaction_scale=0.8
 
 ### Next (ordered)
 1) If future runs drift too easy/hard, adjust `interaction_scale` around 0.8 with a small sweep.

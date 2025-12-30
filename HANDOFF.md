@@ -32,6 +32,8 @@ Pick the next DGP calibration target or add a new DGP; `dgp008_parametric_ripple
 - Ran dgp009 grid sweeps for `complexity=0.8` and `complexity=1.2`: `sweeps/loop19_dgp009_c0p8_xgb_agent06/report.md`, `sweeps/loop20_dgp009_c1p2_xgb_agent06/report.md`.
 - Ran tighter dgp009 grid sweeps for `complexity=0.9, 1.0, 1.1`: `sweeps/loop21_dgp009_c0p9_xgb_agent06/report.md`, `sweeps/loop22_dgp009_c1p0_xgb_agent06/report.md`, `sweeps/loop23_dgp009_c1p1_xgb_agent06/report.md`.
 - Recommended dgp009 default `complexity=0.9` based on grid (R2 ~0.51 across n_train 200–2000); updated defaults accordingly.
+- Confirmed dgp009 default params with 3-seed sweep: `sweeps/loop24_dgp009_default_c0p9_xgb_agent06/report.md`.
+- Default sweep summary (XGBoost, 3 seeds): test R2 ~0.44–0.54 across n_train 200–2000.
 - Ran dgp008 learning curves:
   - XGBoost, `complexity=2.0`: `sweeps/loop07_dgp008_curve_xgb_agent03/report.md` (R2 ~0.49–0.55).
   - XGBoost, `complexity=1.0`: `sweeps/loop08_dgp008_curve_xgb_agent03/report.md` (R2 ~0.82–0.85).

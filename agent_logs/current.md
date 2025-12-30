@@ -57,3 +57,17 @@ Action: Reviewed dgp009 grid reports and set default complexity to 0.9.
 Result: dgp009 defaults now complexity=0.9, interaction_scale=1.0; recommendation noted in HANDOFF.
 Next: Optional multi-seed confirmation run at new defaults if needed.
 Refs: dgp_xgb/dgps.py, HANDOFF.md, sweeps/loop21_dgp009_c0p9_xgb_agent06/report.md.
+
+## 2025-12-29 17:45 PST (agent06)
+Intent: Confirm dgp009 defaults via sweep.
+Action: Ran 3-seed XGBoost sweep using default params for dgp009.
+Result: Sweep artifacts at sweeps/loop24_dgp009_default_c0p9_xgb_agent06 (gitignored); noted in handoff.
+Next: Review report if needed and decide whether to update ADR/README.
+Refs: sweeps/loop24_dgp009_default_c0p9_xgb_agent06/report.md, HANDOFF.md.
+
+## 2025-12-29 17:57 PST (agent06)
+Intent: Summarize dgp009 default sweep and update docs.
+Action: Reviewed loop24 report and updated HANDOFF, README, and ADR 0003 with default params/results.
+Result: Docs now reflect dgp009 defaults and performance summary.
+Next: None unless further calibration requested.
+Refs: sweeps/loop24_dgp009_default_c0p9_xgb_agent06/report.md, HANDOFF.md, README.md, docs/adr/0003-parameterized-dgp-family.md.

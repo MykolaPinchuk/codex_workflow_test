@@ -48,6 +48,8 @@ For more details, see ChatGPT chat at https://chatgpt.com/g/g-p-69488332b01c8191
 - Override XGBoost capacity: `python3 -m dgp_xgb --backend xgboost --xgb-max-depth 2 --xgb-rounds 25`
 - Run a parametric DGP: `python3 -m dgp_xgb --dgp dgp008_parametric_ripple --dgp-params complexity=2.2,interaction_scale=0.8`
 - Default params for `dgp008_parametric_ripple` are `complexity=2.2, interaction_scale=0.8` when omitted.
+- Run dgp009 defaults: `python3 -m dgp_xgb --dgp dgp009_radial_gate`
+- Default params for `dgp009_radial_gate` are `complexity=0.9, interaction_scale=1.0` when omitted.
 - Run a small sweep: `python3 -m dgp_xgb.sweep --sweep-id demo --dgps dgp001_linear,dgp002_interaction --backend baseline_mean`
 - Add a markdown report: `python3 -m dgp_xgb.sweep --sweep-id demo --dgps dgp001_linear --backend baseline_mean --report`
 - Rebuild report without rerunning: `python3 -m dgp_xgb.sweep --sweep-id demo --report-only`

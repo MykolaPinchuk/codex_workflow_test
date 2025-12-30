@@ -26,6 +26,9 @@ Pick the next DGP calibration target or add a new DGP; `dgp008_parametric_ripple
 - Added parametric DGP support (`--dgp-params`) and `dgp008_parametric_ripple`.
 - Documented parameterized DGP decision: `docs/adr/0003-parameterized-dgp-family.md`.
 - Added `interaction_scale` to `dgp008_parametric_ripple` to decouple interaction/gate strength from frequency scaling.
+- Added `dgp009_radial_gate` with radial sine ridge + gated interaction + quadratic term.
+- Parameterized `dgp009_radial_gate` with `complexity` and `interaction_scale` defaults.
+- Ran dgp009 learning curve (3 seeds): `sweeps/loop18_dgp009_curve_xgb_agent06/report.md`.
 - Ran dgp008 learning curves:
   - XGBoost, `complexity=2.0`: `sweeps/loop07_dgp008_curve_xgb_agent03/report.md` (R2 ~0.49–0.55).
   - XGBoost, `complexity=1.0`: `sweeps/loop08_dgp008_curve_xgb_agent03/report.md` (R2 ~0.82–0.85).

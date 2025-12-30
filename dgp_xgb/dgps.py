@@ -171,6 +171,37 @@ def _dgp008_parametric_ripple(
     return features, targets
 
 
+def _dgp009_radial_gate(
+    n: int, seed: int, noise_std: float, params: dict[str, float]
+) -> tuple[list[list[float]], list[float]]:
+    rng = random.Random(seed)
+    n_features = 8
+    complexity = max(0.5, params.get("complexity", 1.0))
+    interaction_scale = max(0.0, params.get("interaction_scale", 1.0))
+    radial_freq = 3.5 * complexity
+    angle_scale = 2.0 * complexity
+    interaction = 0.5 * interaction_scale
+    gate_scale = 0.35 * interaction_scale
+    quadratic_scale = 0.25
+    features: list[list[float]] = []
+    targets: list[float] = []
+    for _ in range(n):
+        row = _uniform_features(rng, n_features)
+        radius = math.sqrt((row[0] ** 2) + (row[1] ** 2))
+        angle = math.atan2(row[1], row[0])
+        radial_wave = math.sin(radial_freq * radius + angle_scale * angle)
+        interaction_term = interaction * row[2] * row[3]
+        gate = 1.0 if row[4] + 0.3 * row[5] > 0.0 else -1.0
+        gated_linear = gate_scale * gate * row[6]
+        quadratic = quadratic_scale * (row[7] ** 2)
+        y_value = (
+            radial_wave + interaction_term + gated_linear + quadratic + _gaussian_noise(rng, noise_std)
+        )
+        features.append(row)
+        targets.append(y_value)
+    return features, targets
+
+
 _DGPS: list[DGP] = [
     DGP(
         name="dgp001_linear",
@@ -220,6 +251,13 @@ _DGPS: list[DGP] = [
         n_features=7,
         generate=_dgp008_parametric_ripple,
         default_params={"complexity": 2.2, "interaction_scale": 0.8},
+    ),
+    DGP(
+        name="dgp009_radial_gate",
+        description="Parametric radial ridge; tune `complexity` and `interaction_scale` via --dgp-params.",
+        n_features=8,
+        generate=_dgp009_radial_gate,
+        default_params={"complexity": 1.0, "interaction_scale": 1.0},
     ),
 ]
 

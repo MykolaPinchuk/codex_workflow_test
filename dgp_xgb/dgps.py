@@ -218,7 +218,7 @@ _DGPS: list[DGP] = [
         description="Parametric family; tune `complexity` via --dgp-params.",
         n_features=7,
         generate=_dgp008_parametric_ripple,
-        default_params={"complexity": 1.0},
+        default_params={"complexity": 2.2},
     ),
 ]
 
